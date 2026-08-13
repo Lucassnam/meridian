@@ -65,13 +65,10 @@ export default function GapList({ scores, onSelectDomain }: GapListProps) {
   return (
     <div
       style={{
-        background: PAPER,
         color: INK,
         fontFamily: CONDENSED,
-        padding: '18px 20px 24px',
+        padding: '16px 18px 18px',
         boxSizing: 'border-box',
-        height: '100%',
-        overflowY: 'auto',
       }}
     >
       <style>{`

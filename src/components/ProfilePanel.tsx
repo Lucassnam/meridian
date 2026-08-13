@@ -99,10 +99,8 @@ export default function ProfilePanel(props: {
   return (
     <section
       style={{
-        background: PAPER,
         color: INK,
-        padding: '18px 20px 20px',
-        borderRight: `1px solid ${RULE}`,
+        padding: '16px 18px 18px',
       }}
     >
       <h2

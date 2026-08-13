@@ -151,6 +151,7 @@ export default function App() {
   const [contacts] = useState<Contact[]>(SEED_CONTACTS);
   const [profile, setProfile] = useState<Profile>(SEED_PROFILE);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [showProfile, setShowProfile] = useState(false);
 
   const scores = useMemo<DomainScore[]>(
     () => scoreDomains(contacts, profile),
@@ -170,49 +171,89 @@ export default function App() {
     setSelectedId(first ? first.id : null);
   };
 
+  /* The map is the page. Everything else floats over it and stays out of the
+     way until asked for. */
   return (
-    <div className="flex h-full flex-col paper-ground">
-      {/* ---- header: quiet. the chart is the hero. ---- */}
-      <header className="rule-b flex shrink-0 items-baseline gap-4 px-5 py-2.5">
-        <h1
-          className="text-[16px] font-semibold uppercase"
-          style={{ letterSpacing: '0.34em' }}
-        >
-          Meridian
-        </h1>
-        <span className="u-label ml-auto u-figure">
-          {contacts.length} contacts · {DOMAINS.length} domains
-        </span>
-      </header>
+    <div className="paper-ground relative h-full w-full overflow-hidden">
+      {/* ---- the asset, edge to edge ---- */}
+      <div className="absolute inset-0">
+        <Chart
+          contacts={contacts}
+          scores={scores}
+          selectedId={selectedId}
+          onSelect={setSelectedId}
+        />
+      </div>
 
-      <main className="flex min-h-0 flex-1">
-        {/* ---- left rail: gaps ---- */}
-        <aside className="rule-r panel-scroll flex w-[264px] shrink-0 flex-col">
+      {/* ---- overlays. container ignores the mouse; cards claim it back ---- */}
+      <div className="pointer-events-none absolute inset-0">
+        <header className="absolute left-8 top-7">
+          <h1
+            className="text-[15px] font-semibold uppercase leading-none"
+            style={{ letterSpacing: '0.42em' }}
+          >
+            Meridian
+          </h1>
+          <p className="u-label u-figure mt-2">
+            {contacts.length} contacts · {DOMAINS.length} domains
+          </p>
+        </header>
+
+        {/* unmapped ground — the one reading that earns permanent space */}
+        <div data-panel="gaps" className="card pointer-events-auto absolute bottom-7 left-8 w-[286px]">
           <GapList scores={scores} onSelectDomain={handleSelectDomain} />
-        </aside>
+        </div>
 
-        {/* ---- center: the chart ---- */}
-        <section className="flex min-w-0 flex-1 flex-col">
-          <div className="min-h-0 flex-1">
-            <Chart
-              contacts={contacts}
-              scores={scores}
-              selectedId={selectedId}
-              onSelect={setSelectedId}
-            />
-          </div>
-        </section>
+        {/* Right side is one column, so the two cards share the height instead
+            of overlapping each other on a short window. */}
+        <div className="absolute bottom-7 right-8 top-7 flex w-[320px] flex-col items-end gap-3">
+          {showProfile ? (
+            <div
+              data-panel="profile"
+              className="card pointer-events-auto relative w-full"
+              style={{ maxHeight: '46vh' }}
+            >
+              <button
+                type="button"
+                className="card-close"
+                onClick={() => setShowProfile(false)}
+                aria-label="Close"
+              >
+                ×
+              </button>
+              <ProfilePanel profile={profile} onChange={setProfile} />
+            </div>
+          ) : (
+            <button
+              type="button"
+              className="pill pointer-events-auto"
+              onClick={() => setShowProfile(true)}
+            >
+              Your bearings
+            </button>
+          )}
 
-        {/* ---- right rail: profile over detail ---- */}
-        <aside className="rule-l flex w-[320px] shrink-0 flex-col">
-          <div className="rule-b panel-scroll min-h-0 flex-[5]">
-            <ProfilePanel profile={profile} onChange={setProfile} />
-          </div>
-          <div className="panel-scroll min-h-0 flex-[4]">
-            <ContactDetail contact={selected} />
-          </div>
-        </aside>
-      </main>
+          <div className="min-h-0 flex-1" />
+
+          {selected && (
+            <div
+              data-panel="detail"
+              className="card pointer-events-auto relative w-full"
+              style={{ maxHeight: '46vh' }}
+            >
+              <button
+                type="button"
+                className="card-close"
+                onClick={() => setSelectedId(null)}
+                aria-label="Close"
+              >
+                ×
+              </button>
+              <ContactDetail contact={selected} />
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

@@ -161,13 +161,9 @@ export default function ContactDetail(props: { contact: Contact | null }) {
   return (
     <section
       style={{
-        background: PAPER,
         color: INK,
-        padding: '20px',
-        borderLeft: `1px solid ${RULE}`,
-        height: '100%',
+        padding: '18px',
         boxSizing: 'border-box',
-        overflowY: 'auto',
       }}
     >
       <h2

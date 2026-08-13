@@ -20,9 +20,9 @@ import { DOMAINS, INK, RULE, type Contact, type DomainScore } from '../types';
 const CONDENSED =
   '"Archivo Narrow", "Roboto Condensed", "Arial Narrow", system-ui, sans-serif';
 
-const YOU_R = 9;
-const HUB_R = 5.5;
-const LINK_W = 0.7;
+const YOU_R = 13;
+const HUB_R = 7;
+const LINK_W = 0.8;
 const RANGE_RINGS = [110, 200, 290, 380];
 
 type Kind = 'you' | 'domain' | 'contact';
@@ -131,7 +131,7 @@ export default function Chart(props: {
         kind: 'domain',
         label: d.label,
         ink: d.ink,
-        r: HUB_R + Math.min(5, n * 0.42),
+        r: HUB_R + Math.min(6, n * 0.5),
         empty: n === 0,
       });
       links.push({
@@ -150,7 +150,7 @@ export default function Chart(props: {
         kind: 'contact',
         label: c.name,
         ink: d.ink,
-        r: 2.8 + c.depth * 0.85,
+        r: 3.6 + c.depth * 1.15,
         contact: c,
       });
       links.push({
@@ -221,7 +221,7 @@ export default function Chart(props: {
       .force(
         'collide',
         forceCollide<GNode>((d) =>
-          d.kind === 'domain' ? 52 : d.kind === 'you' ? 30 : d.r + 11
+          d.kind === 'domain' ? 58 : d.kind === 'you' ? 34 : d.r + 12
         ).strength(0.9)
       )
       .alphaDecay(0.035)
@@ -263,7 +263,7 @@ export default function Chart(props: {
     const zb = zoomRef.current;
     if (!svg || !zb || didFit.current || size.w === 0 || size.h === 0) return;
     didFit.current = true;
-    const k = Math.min(1.15, Math.max(0.35, Math.min(size.w, size.h) / 880));
+    const k = Math.min(1.3, Math.max(0.4, Math.min(size.w, size.h) / 780));
     select(svg).call(
       zb.transform,
       zoomIdentity.translate(size.w / 2, size.h / 2).scale(k)
@@ -369,7 +369,7 @@ export default function Chart(props: {
                       fill={INK}
                       fillOpacity={n.empty ? 0.75 : 0.6}
                       fontFamily={CONDENSED}
-                      fontSize={8.5}
+                      fontSize={10}
                       letterSpacing={1.1}
                       style={{ userSelect: 'none', pointerEvents: 'none' }}
                     >
@@ -378,12 +378,14 @@ export default function Chart(props: {
                   )}
 
                   {n.kind === 'you' && (
+                    /* Above the node: hub labels all sit below theirs, and a
+                       hub can drift close enough to collide down there. */
                     <text
-                      y={n.r + 13}
+                      y={-(n.r + 9)}
                       textAnchor="middle"
                       fill={INK}
                       fontFamily={CONDENSED}
-                      fontSize={10}
+                      fontSize={11.5}
                       letterSpacing={2.4}
                       style={{ userSelect: 'none', pointerEvents: 'none' }}
                     >
@@ -398,7 +400,7 @@ export default function Chart(props: {
                       fill={INK}
                       fillOpacity={selected || hovered ? 0.95 : 0.55}
                       fontFamily={CONDENSED}
-                      fontSize={8}
+                      fontSize={9}
                       letterSpacing={0.5}
                       style={{ userSelect: 'none', pointerEvents: 'none' }}
                     >

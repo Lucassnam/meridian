@@ -100,6 +100,55 @@ body {
   border-radius: 0;
 }
 
+/* --- floating cards over the map ----------------------------- */
+/* No `position` here on purpose: this file sits outside Tailwind's layers, so
+   a `position` declaration would beat the `absolute` utility on the same
+   element and drop every card back into normal flow. Callers position it. */
+.card {
+  background: rgba(238, 239, 232, 0.93);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid var(--rule);
+  box-shadow: 0 1px 0 rgba(27, 35, 32, 0.05);
+  max-height: 62vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+}
+.card::-webkit-scrollbar { width: 7px; }
+.card::-webkit-scrollbar-thumb { background: var(--rule-faint); }
+
+.card-close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  z-index: 2;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 17px;
+  line-height: 1;
+  padding: 3px 5px;
+  color: var(--ink-faint);
+}
+.card-close:hover { color: var(--ink); }
+
+.pill {
+  background: rgba(238, 239, 232, 0.93);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  cursor: pointer;
+  padding: 8px 15px;
+  font-family: var(--font-sans, "Archivo Narrow", sans-serif);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.pill:hover { background: var(--paper-lift); }
+
 /* --- placeholder slots (minute-0 fallback demo) -------------- */
 .slot {
   border: 1px dashed var(--rule);
