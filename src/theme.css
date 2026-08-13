@@ -1,0 +1,118 @@
+@import "tailwindcss";
+
+/* ============================================================
+   MERIDIAN — survey chart, not dashboard.
+   Pale chart-paper ground, muted printing inks, condensed sans
+   for map labels, serif italic reserved for terra incognita.
+   ============================================================ */
+
+@theme {
+  --color-paper: #E8E9E1;
+  --color-paper-deep: #E0E1D7;
+  --color-paper-lift: #EFF0E9;
+  --color-ink: #1B2320;
+  --color-ink-soft: #4A544F;
+  --color-ink-faint: #77807A;
+  --color-rule: #A9AC9F;
+  --color-rule-faint: #C6C8BC;
+
+  --font-sans: "Archivo Narrow", "Roboto Condensed", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Spectral", "Iowan Old Style", Georgia, serif;
+}
+
+:root {
+  --paper: #E8E9E1;
+  --paper-deep: #E0E1D7;
+  --paper-lift: #EFF0E9;
+  --ink: #1B2320;
+  --ink-soft: #4A544F;
+  --ink-faint: #77807A;
+  --rule: #A9AC9F;
+  --rule-faint: #C6C8BC;
+
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Archivo Narrow", "Roboto Condensed", "Helvetica Neue", Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* --- chart-paper ground: a faint survey grid, never assertive --- */
+.paper-ground {
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(to right, rgba(27, 35, 32, 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(27, 35, 32, 0.045) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* --- type roles --------------------------------------------- */
+.u-label {
+  font-family: var(--font-sans, "Archivo Narrow", sans-serif);
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.u-figure {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+/* Serif italic is reserved. Terra incognita region names only. */
+.u-terra {
+  font-family: var(--font-serif, "Spectral", Georgia, serif);
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+}
+
+/* --- chrome ------------------------------------------------- */
+.rule-t { border-top: 1px solid var(--rule); }
+.rule-b { border-bottom: 1px solid var(--rule); }
+.rule-l { border-left: 1px solid var(--rule); }
+.rule-r { border-right: 1px solid var(--rule); }
+
+.panel-scroll {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
+}
+.panel-scroll::-webkit-scrollbar { width: 8px; }
+.panel-scroll::-webkit-scrollbar-thumb {
+  background: var(--rule-faint);
+  border-radius: 0;
+}
+
+/* --- placeholder slots (minute-0 fallback demo) -------------- */
+.slot {
+  border: 1px dashed var(--rule);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+.slot-name {
+  font-family: var(--font-serif, "Spectral", Georgia, serif);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--ink-faint);
+  letter-spacing: 0.06em;
+}
